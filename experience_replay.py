@@ -20,11 +20,11 @@ class ReplayBuffer:
     return(self.buffer[random.randint(0,len(self.buffer))])
 
 class Experience:
-  def __init__(self,current_state,next_state,action,reward):
-    self.current_state= current_state
-    self.next_state=next_state
-    self.action=action
-    self.reward=reward
+  def __init__(self, current_state, action, next_state, reward):
+    self.current_state = current_state
+    self.action = action
+    self.next_state = next_state
+    self.reward = reward
 
   def show(self):
     print(".....")

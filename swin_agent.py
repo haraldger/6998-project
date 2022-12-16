@@ -26,7 +26,7 @@ class SwinAgent:
 
         self.gamma = gamma
         self.alpha = alpha
-        self.optimizer = torch.optim.Adam(self.Q, lr=alpha)
+        self.optimizer = torch.optim.NAdam(self.Q.parameters(), lr=alpha)
         
 
     def act(self, state):
@@ -35,16 +35,16 @@ class SwinAgent:
 
         epsilon = self.epsilon_scheduler.get_epsilon()
         if epsilon > random.random():
-            action = random.sample(range(self.num_actions))
+            action = random.randrange(self.num_actions)
         else:
-            action = torch.max(self.Q_target(state))
+            action = torch.max(self.Q(state))
         return action
 
     def learn(self):
         if self.frames_counter < self.initial_exploration:
             return
-        if self.frames_counter % self.learning_frequency != 0:
-            return
+        # if self.frames_counter % self.learning_frequency != 0:
+        #     return
 
         ### TODO: implement batch learning
         """
@@ -58,8 +58,9 @@ class SwinAgent:
             self.Q_target.load_state_dict(state_dict)
 
 
-
-        
+    def loss(state):
+        # TODO
+        raise NotImplementedError
 
 
     def step(self):
