@@ -1,4 +1,8 @@
 DEPENDENCIES
+```
+!pip install gymnasium[all]
+!pip install gymnasium[accept-rom-license]
+```
 
 PRE-REQUISITES
 1. Clone this project

@@ -1,6 +1,8 @@
 class EpsilonScheduler:
     def __init__(self, initial_epsilon=1.0, final_epsilon=0.01, decay_frames=1E6, decay_mode='single', decay_rate=0.1) -> None:
         """
+        Default values as according to the paper https://arxiv.org/pdf/2206.15269.pdf.
+
         initial_epsilon (float):  Initial value of epsilon.
         final_epsilon (float): Final value of epsilon, will not decay beyond this.
         decay_frames (int): Number of frames after which to decay epsilon.
