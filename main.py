@@ -23,6 +23,9 @@ REPLAY_MEMORY = 1E6
 # DECAY_RATE=0.1
 
 def main():
+    ms_pacman()
+
+def ms_pacman():
     # Init data structures
     q_network = get_model()
     target_network = get_model()
