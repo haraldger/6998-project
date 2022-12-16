@@ -26,7 +26,7 @@ class SwinAgent:
 
         self.gamma = gamma
         self.alpha = alpha
-        self.optimizer = torch.optim.NAdam(self.Q.parameters(), lr=alpha)
+        self.optimizer = torch.optim.Adam(self.Q.parameters(), lr=alpha)
         
 
     def act(self, state):
