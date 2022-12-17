@@ -48,8 +48,6 @@ def ms_pacman():
 
     total_reward = 0
     for episode in range(EPISODES):
-        flag = False
-
         previous_state = next_state
 
         # Act
@@ -76,6 +74,7 @@ def ms_pacman():
             plt.figure()
             plt.xlabel('Frames (gradient descent updates)')
             plt.ylabel('Reward')
+            print(reward_data)
             print(reward_data[:0])
             print(reward_data[:1])
             plt.plot(reward_data[:0], reward_data[:1])
