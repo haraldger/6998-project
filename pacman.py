@@ -71,8 +71,7 @@ def ms_pacman():
         if terminated or truncated:
             # Data collection
             global reward_data
-            reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]]))) 
-            print(reward_data)
+            reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]])))
             plt.figure()
             plt.plot(reward_data[:,0], reward_data[:,1])
             plt.savefig(f'data/pacman_graph.png')
