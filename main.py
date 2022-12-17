@@ -15,13 +15,14 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
-REPLAY_MEMORY = 1000
+REPLAY_MEMORY = 10000
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
 DECAY_FRAMES = 1000
-DECAY_MODE='multiple'
-DECAY_RATE=0.66
+DECAY_MODE = 'multiple'
+DECAY_RATE = 0.66
+DECAY_START_FRAMES = 10000
 SYNC_FREQUENCY = 1000
 
 def main():
@@ -31,7 +32,7 @@ def ms_pacman():
     # Init data structures
     q_network = get_model()
     target_network = get_model()
-    epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE)
+    epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
     agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7,
                         initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)

@@ -1,5 +1,5 @@
 class EpsilonScheduler:
-    def __init__(self, initial_epsilon=1.0, final_epsilon=0.01, decay_frames=1E6, decay_mode='single', decay_rate=0.1) -> None:
+    def __init__(self, initial_epsilon=1.0, final_epsilon=0.01, decay_frames=1E6, decay_mode='single', decay_rate=0.1, start_frames=0) -> None:
         """
         Default values as according to the paper https://arxiv.org/pdf/2206.15269.pdf.
 
@@ -17,6 +17,7 @@ class EpsilonScheduler:
         self.final_epsilon = final_epsilon
         self.decay_mode = decay_mode
         self.decay_rate = decay_rate
+        self.start_frames = start_frames
 
         self.current_epsilon = self.initial_epsilon
         self.frames = 0
@@ -27,12 +28,15 @@ class EpsilonScheduler:
         """
         self.frames += 1
 
+        if self.frames < self.start_frames:
+            return
+
         if self.decay_mode == 'multiple':
             if self.frames % self.decay_frames == 0:
                 self.current_epsilon = max(self.final_epsilon, self.current_epsilon * self.decay_rate)
 
         else:
-            if self.frames == self.decay_frames:
+            if self.frames % self.decay_frames == 0:
                 self.current_epsilon = self.final_epsilon
 
     def get_epsilon(self):
