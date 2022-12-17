@@ -6,12 +6,12 @@ import torch
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class ReplayBuffer:
-    def __init__(self, capacity=3, dims=(3,84,84)):
+    def __init__(self, capacity=40000, dims=(3,84,84)):
         self.capacity = capacity
         self.counter = 0
         self.dims=dims
 
-        self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
+        self.state_memory = torch.FloatTensor(size=(self.capacity, self.dims[0], self.dims[1], self.dims[2]))
         print(self.state_memory)
         print(self.state_memory.shape)
         self.action_memory = torch.LongTensor((self.capacity,1))
