@@ -12,9 +12,9 @@ class ReplayBuffer:
         self.dims=dims
 
         self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
-        self.action_memory = torch.LongTensor(self.capacity,1)
-        self.next_state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
-        self.reward_memory = torch.FloatTensor((self.capacity)).to(DEVICE)
+        self.action_memory = torch.LongTensor((self.capacity,1))
+        self.next_state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
+        self.reward_memory = torch.FloatTensor((self.capacity,1))
 
 
     def add(self, state, action, next_state, reward):
@@ -29,7 +29,7 @@ class ReplayBuffer:
     def sample_tensor_batch(self, batch_size):
         sample_index = np.random.choice(self.memory_size, batch_size)
 
-        state_sample = torch.tensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
+        state_sample = torch.FloatTensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
         action_sample = torch.LongTensor((batch_size, 1)).to(DEVICE)
         next_state_sample = torch.FloatTensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
         reward_sample = torch.FloatTensor((batch_size, 1)).to(DEVICE)
