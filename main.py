@@ -64,7 +64,7 @@ def process_state(state):
     state = resize(state, (84, 84))
     state = np.moveaxis(state, 2, 0)
     state = np.expand_dims(state, 0)
-    return torch.from_numpy(state)
+    return torch.from_numpy(state).to(DEVICE)
 
 
 def get_model(image_size=(84,84), patch_size=3, in_channels=3,
