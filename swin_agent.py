@@ -37,6 +37,7 @@ class SwinAgent:
             action = random.randrange(self.num_actions)
         else:
             action = torch.max(self.Q(state))
+        print(action)
         return action
 
     def learn(self):
