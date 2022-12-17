@@ -104,7 +104,7 @@ def get_model(image_size=(84,84), patch_size=3, in_channels=3,
     """
     return Transformer(img_size=image_size, patch_size=patch_size, in_chans=in_channels,
                     num_classes=num_actions, depths=depths, num_heads=heads, window_size=window_size,
-                    mlp_ratio=mlp_ratio, drop_path_rate=drop_path_rate)
+                    mlp_ratio=mlp_ratio, drop_path_rate=drop_path_rate).to(DEVICE)
 
 
 
