@@ -42,7 +42,7 @@ def tetris():
     target_network = get_model()
     epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent("tetris", q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=20,
+    agent = SwinAgent("tetris", q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=12,
                         initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
 
     # Environment
@@ -97,7 +97,7 @@ def process_state(state):
 
 
 def get_model(image_size=(256,256), patch_size=4, in_channels=3,
-            num_actions=20, depths=[2,3,2], heads=[3,3,6],
+            num_actions=12, depths=[2,3,2], heads=[3,3,6],
             window_size=8, mlp_ratio=4, drop_path_rate=0.1):
     """
     Default settings are appropriate for Atari games. For other environments, change patch size
