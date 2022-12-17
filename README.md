@@ -2,6 +2,8 @@ DEPENDENCIES
 ```
 !pip install gymnasium[all]
 !pip install gymnasium[accept-rom-license]
+!pip install timm
+!pip install scikit-image
 ```
 
 PRE-REQUISITES

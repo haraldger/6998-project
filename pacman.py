@@ -92,7 +92,7 @@ def process_state(state):
 
 
 def get_model(image_size=(84,84), patch_size=3, in_channels=3,
-            num_actions=7, depths=[2,3,2], heads=[3,3,6],
+            num_actions=8, depths=[2,3,2], heads=[3,3,6],
             window_size=7, mlp_ratio=4, drop_path_rate=0.1):
     """
     Default settings are appropriate for Atari games. For other environments, change patch size
