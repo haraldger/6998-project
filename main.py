@@ -55,6 +55,10 @@ def ms_pacman():
         # Learn
         agent.learn()
 
+        # Update frame counters
+        agent.step()
+        epsilon_scheduler.step()
+
         # Environment
         if terminated or truncated:
             observation, info = env.reset() 
