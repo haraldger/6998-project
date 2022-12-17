@@ -15,7 +15,7 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DTYPE = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-EPISODES = int(200E6)
+EPISODES = int(1E6)
 REPLAY_MEMORY = 1E6
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
@@ -65,7 +65,7 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            print(total_reward)
+            print(f"{total_reward}, {episode}")
             total_reward = 0
             next_state, info = env.reset() 
             next_state = process_state(next_state)
