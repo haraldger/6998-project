@@ -43,6 +43,9 @@ def ms_pacman():
     for episode in range(EPISODES):
 
         previous_state = next_state
+        if episode == 30:
+            state_batch, action_batch, next_state_batch, reward_batch = replay_buffer.sample_tensor_batch(32)
+            print(state_batch)
 
         # Act
         action = agent.act(previous_state)
