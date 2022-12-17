@@ -30,9 +30,9 @@ def ms_pacman():
     # Init data structures
     q_network = get_model()
     target_network = get_model()
-    epsilon_scheduler = EpsilonScheduler()
+    epsilon_scheduler = EpsilonScheduler(decay_frames=40000)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7)
+    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7, initial_exploration=20000)
 
     # Environment
     env = gym.make('ALE/MsPacman-v5')
@@ -74,7 +74,7 @@ def process_state(state):
     state = resize(state, (84, 84))
     state = np.moveaxis(state, 2, 0)
     state = np.expand_dims(state, 0)
-    return torch.from_numpy(state).type(torch.FloatTensor).to(DEVICE)
+    return state
 
 
 def get_model(image_size=(84,84), patch_size=3, in_channels=3,

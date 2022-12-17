@@ -32,18 +32,15 @@ class ReplayBuffer:
 
     for i in range(batch_size):
       experience = self.sample()
-      state_batch.append([experience.current_state])
-      action_batch.append([experience.action])
-      next_state_batch.append([experience.next_state])
-      reward_batch.append([experience.reward])
-    try:
-      state_batch = torch.Tensor(state_batch)
-    except ValueError:
-      print(state_batch)
-      state_batch = torch.Tensor(state_batch)
-    action_batch = torch.Tensor(action_batch)
-    next_state_batch = torch.Tensor(next_state_batch)
-    reward_batch = torch.Tensor(reward_batch)
+      state_batch.append(experience.current_state)
+      action_batch.append(experience.action)
+      next_state_batch.append(experience.next_state)
+      reward_batch.append(experience.reward)
+
+    state_batch = torch.Tensor(state_batch).to(DEVICE)
+    action_batch = torch.Tensor(action_batch).to(DEVICE)
+    next_state_batch = torch.Tensor(next_state_batch).to(DEVICE)
+    reward_batch = torch.Tensor(reward_batch).to(DEVICE)
 
 class Experience:
   def __init__(self, current_state, action, next_state, reward):
