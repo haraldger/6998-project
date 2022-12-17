@@ -47,8 +47,12 @@ class SwinAgent:
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
 
         # Compute Bellman loss/update
-        print(torch.cuda.memory_reserved(0) - torch.cuda.memory_allocated(0))
-        q_values = self.Q(state_batch).gather(1, action_batch)
+        try:
+            q_values = self.Q(state_batch).gather(1, action_batch)
+        except:
+            print(torch.cuda.memory_reserved(0) - torch.cuda.memory_allocated(0))
+            q_values = self.Q(state_batch).gather(1, action_batch)
+
         target_q_values = self.Q_target(next_state_batch).detach()
         targets = reward_batch + self.gamma * target_q_values.max(1)[0].view(self.batch_size, 1)
         loss = self.loss_fn(q_values, targets)
