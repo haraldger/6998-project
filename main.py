@@ -27,7 +27,7 @@ DECAY_START_FRAMES = REPLAY_MEMORY
 SYNC_FREQUENCY = 5000
 
 # Data collection
-reward_data = np.array([0,0])
+reward_data = np.array([[0,0]])
 print(reward_data)
 
 def main():
@@ -71,7 +71,8 @@ def ms_pacman():
         # Environment
         if terminated or truncated:
             # Data collection
-            reward_data.append([episode, total_reward]) 
+            reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]]))) 
+            print(reward_data)
             plt.figure()
             plt.xlabel('Frames (gradient descent updates)')
             plt.ylabel('Reward')
