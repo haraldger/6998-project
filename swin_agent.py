@@ -45,6 +45,10 @@ class SwinAgent:
 
         # Sample batch from replay memory
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
+        state_batch = state_batch.to(DEVICE)
+        action_batch = action_batch.to(DEVICE)
+        next_state_batch = next_state_batch.to(DEVICE)
+        reward_batch = reward_batch.to(DEVICE)
 
         # Compute Bellman loss/update
         try:
@@ -63,9 +67,16 @@ class SwinAgent:
         loss.backward()
         self.optimizer.step()
 
+        # Sync
         if self.frames_counter % self.sync_frequency == 0:
             state_dict = self.Q.state_dict()
             self.Q_target.load_state_dict(state_dict)
+
+        # Cuda Clean-up
+        del state_batch
+        del action_batch
+        del next_state_batch
+        del reward_batch
 
 
     def loss(self, state_batch, action_batch, next_state_batch, reward_batch):

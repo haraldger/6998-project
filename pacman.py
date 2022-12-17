@@ -16,15 +16,15 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
-REPLAY_MEMORY = 5000
+REPLAY_MEMORY = 2000
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON = 0.01
-DECAY_FRAMES = 10000
+DECAY_FRAMES = 4000
 DECAY_MODE = 'multiple'
 DECAY_RATE = 0.25
 DECAY_START_FRAMES = REPLAY_MEMORY
-SYNC_FREQUENCY = 5000
+SYNC_FREQUENCY = 2000
 
 # Data collection
 reward_data = np.array([[0,0]])
