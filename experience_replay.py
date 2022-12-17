@@ -10,7 +10,7 @@ class ReplayBuffer:
         self.capacity = capacity
         self.counter = 0
         self.dims=dims
-
+        print(self.dims)
         self.state_memory = torch.empty(size=(self.capacity, self.dims[0], self.dims[1], self.dims[2]), dtype=torch.float)
         print(self.state_memory)
         print(self.state_memory.shape)
