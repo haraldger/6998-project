@@ -35,3 +35,9 @@ EVALUATE TRAINED AGENT
 
 CREDIT
 1. arXiv:2206.15269 - https://doi.org/10.48550/arXiv.2206.15269 - Deep Reinforcement Learning with Swin Transformer
+2. @misc{gym-tetris,
+  author = {Christian Kauten},
+  howpublished = {GitHub},
+  title = {{Tetris (NES)} for {OpenAI Gym}},
+  URL = {https://github.com/Kautenja/gym-tetris},
+  year = {2019},}
