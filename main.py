@@ -20,8 +20,8 @@ INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
 DECAY_FRAMES = 1000
-# DECAY_MODE='single'
-# DECAY_RATE=0.1
+DECAY_MODE='multiple'
+DECAY_RATE=0.66
 SYNC_FREQUENCY = 1000
 
 def main():
@@ -31,7 +31,7 @@ def ms_pacman():
     # Init data structures
     q_network = get_model()
     target_network = get_model()
-    epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES)
+    epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
     agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7,
                         initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
