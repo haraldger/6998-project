@@ -10,20 +10,19 @@ class ReplayBuffer:
         self.capacity = capacity
         self.counter = 0
         self.dims=dims
-        print((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
-        self.state_memory = torch.empty(size=(self.capacity, self.dims[0], self.dims[1], self.dims[2]))
-        self.action_memory = torch.LongTensor((self.capacity,1))
-        self.next_state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
-        self.reward_memory = torch.FloatTensor((self.capacity,1))
+
+        self.state_memory = torch.empty(size=(self.capacity, self.dims[0], self.dims[1], self.dims[2])).type(torch.float)
+        self.action_memory = torch.empty(size=(self.capacity,1)).type(torch.long)
+        self.next_state_memory = torch.empty(size=(self.capacity, self.dims[0], self.dims[1], self.dims[2])).type(torch.float)
+        self.reward_memory = torch.empty(size=(self.capacity,1)).type(torch.float)
 
 
     def add(self, state, action, next_state, reward):
         idx = int(self.counter % self.capacity)
-        print(torch.from_numpy(state))
-        self.state_memory[idx] = torch.FloatTensor([state])
-        self.action_memory[idx] = torch.LongTensor([action.tolist()])
-        self.next_state_memory[idx] = torch.FloatTensor(next_state)
-        self.reward_memory[idx] = torch.FloatTensor([reward])
+        self.state_memory[idx] = torch.from_numpy(state).type(torch.float)
+        self.action_memory[idx] = torch.Tensor([action]).type(torch.long)
+        self.next_state_memory[idx] = torch.from_numpy(next_state).type(torch.float)
+        self.reward_memory[idx] = torch.Tensor([reward]).type(torch.float)
         self.counter += 1
     
 
