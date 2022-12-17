@@ -53,8 +53,7 @@ def ms_pacman():
 
         # Act
         action = agent.act(previous_state)
-        print(action)
-        next_state, reward, terminated, truncated, info = env.step(action)
+        next_state, reward, terminated, truncated, info = env.step(11)
         next_state = process_state(next_state)
 
         total_reward += reward
