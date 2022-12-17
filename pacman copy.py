@@ -16,7 +16,7 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
-REPLAY_MEMORY = 5000
+REPLAY_MEMORY = 50000
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
