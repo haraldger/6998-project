@@ -19,7 +19,7 @@ class ReplayBuffer:
 
     def add(self, state, action, next_state, reward):
         idx = int(self.counter % self.capacity)
-        self.state_memory[idx] = torch.FloatTensor(state)
+        self.state_memory[idx] = state
         self.action_memory[idx] = torch.LongTensor([action.tolist()])
         self.next_state_memory[idx] = torch.FloatTensor(next_state)
         self.reward_memory[idx] = torch.FloatTensor([reward])
