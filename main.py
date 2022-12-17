@@ -76,6 +76,8 @@ def ms_pacman():
             plt.figure()
             plt.xlabel('Frames (gradient descent updates)')
             plt.ylabel('Reward')
+            print(reward_data[:0])
+            print(reward_data[:1])
             plt.plot(reward_data[:0], reward_data[:1])
             plt.savefig(f'data/pacman_graph.png')
 
