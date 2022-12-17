@@ -11,7 +11,7 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 class SwinAgent:
     def __init__(self, Q_network, target_network, epsilon_scheduler, replay_buffer, num_actions,
                 initial_exploration=40000, acting_frequency=4, learning_frequency=4, sync_frequency=40000, 
-                gamma=0.99, alpha=0.0000625, batch_size=32) -> None:
+                gamma=0.99, alpha=0.0000625, batch_size=32, loss_fn=torch.nn.MSELoss) -> None:
         self.Q = Q_network.to(device=DEVICE)
         self.Q_target = target_network.to(device=DEVICE)
         self.epsilon_scheduler = epsilon_scheduler
@@ -27,13 +27,11 @@ class SwinAgent:
         self.gamma = gamma
         self.alpha = alpha
         self.batch_size = batch_size
+        self.loss_fn = loss_fn
         self.optimizer = torch.optim.Adam(self.Q.parameters(), lr=alpha)
         
 
     def act(self, state):
-        print("Testing network")
-        print(self.Q(state))
-        print("Succesfully tested network")
         if self.frames_counter % self.acting_frequency != 0:
             return None 
 
@@ -59,7 +57,16 @@ class SwinAgent:
         # Sample batch from replay memory
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
 
+        # Compute Bellman loss/update
+        q_values = self.Q(state_batch).gather(1, action_batch)
+        target_q_values = self.Q_target(next_state_batch).detach()
+        targets = reward_batch + self.gamma * target_q_values.max(1)[0].view(self.batch_size, 1)
+        loss = self.loss_fn(q_values, targets)
 
+        # Backpropagation
+        self.optimizer.zero_grad()
+        loss.backwards()
+        self.optimizer.step()
 
         if self.frames_counter % self.sync_frequency == 0:
             state_dict = self.Q.state_dict()

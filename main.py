@@ -61,7 +61,8 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            observation, info = env.reset() 
+            print(reward)
+            next_state, info = env.reset() 
         
     
 def process_state(state):
