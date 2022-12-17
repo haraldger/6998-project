@@ -31,7 +31,7 @@ class SwinAgent:
         
 
     def act(self, state):
-        state = torch.from_numpy(state).unsqueeze(0).to(DEVICE)
+        state = torch.from_numpy(state).type(torch.float).unsqueeze(0).to(DEVICE)
         epsilon = self.epsilon_scheduler.get_epsilon()
         if epsilon > random.random():
             action = random.randrange(self.num_actions)
