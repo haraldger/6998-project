@@ -1,3 +1,4 @@
+import sys
 import random
 import torch
 
@@ -35,8 +36,11 @@ class ReplayBuffer:
       action_batch.append([experience.action])
       next_state_batch.append([experience.next_state])
       reward_batch.append([experience.reward])
-
-    state_batch = torch.Tensor(state_batch)
+    try:
+      state_batch = torch.Tensor(state_batch)
+    except ValueError:
+      print(state_batch)
+      state_batch = torch.Tensor(state_batch)
     action_batch = torch.Tensor(action_batch)
     next_state_batch = torch.Tensor(next_state_batch)
     reward_batch = torch.Tensor(reward_batch)
