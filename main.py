@@ -35,17 +35,21 @@ def ms_pacman():
     agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7)
 
     # Environment
-    env = gym.make('ALE/MsPacman-v5', render_mode='rgb_array')
+    env = gym.make('ALE/MsPacman-v5')
     next_state, info = env.reset()
     next_state = process_state(next_state)
 
+    total_reward = 0
     for episode in range(EPISODES):
+
         previous_state = next_state
 
         # Act
         action = agent.act(previous_state)
         next_state, reward, terminated, truncated, info = env.step(action)
         next_state = process_state(next_state)
+
+        total_reward += reward
 
         # Experience replay
         experience = Experience(previous_state, action, next_state, reward)
@@ -60,7 +64,8 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            print(reward)
+            print(total_reward)
+            total_reward = 0
             next_state, info = env.reset() 
         
     
