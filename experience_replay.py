@@ -40,7 +40,7 @@ class ReplayBuffer:
     try:
       state_batch = torch.Tensor(state_batch).to(DEVICE)
     except:
-      print(state_batch)
+      print(state_batch.shape)
       state_batch = torch.Tensor(state_batch).to(DEVICE)
 
     action_batch = torch.Tensor(action_batch).type(torch.int64).to(DEVICE)

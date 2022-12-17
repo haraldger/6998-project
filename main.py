@@ -68,6 +68,7 @@ def ms_pacman():
             print(total_reward)
             total_reward = 0
             next_state, info = env.reset() 
+            next_state = process_state(next_state)
         
     
 def process_state(state):
