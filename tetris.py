@@ -38,20 +38,17 @@ def main():
 
 def tetris():
     # Init data structures
-    q_network = get_model()
-    target_network = get_model()
-    epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
-    replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent("tetris", q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=20,
-                        initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
+    # q_network = get_model()
+    # target_network = get_model()
+    # epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
+    # replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
+    # agent = SwinAgent("tetris", q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=20,
+    #                     initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
 
     # Environment
     env = gym_tetris.make('TetrisA-v0')
     env = JoypadSpace(env, MOVEMENT)
     next_state = env.reset()
-    print(next_state)
-    print(next_state.shape)
-    return
     next_state = process_state(next_state)
 
     total_reward = 0
@@ -94,14 +91,14 @@ def tetris():
         
     
 def process_state(state):
-    state = resize(state, (84, 84))
+    state = resize(state, (256, 256))
     state = np.moveaxis(state, 2, 0)
     return state
 
 
-def get_model(image_size=(84,84), patch_size=3, in_channels=3,
+def get_model(image_size=(256,256), patch_size=4, in_channels=3,
             num_actions=20, depths=[2,3,2], heads=[3,3,6],
-            window_size=7, mlp_ratio=4, drop_path_rate=0.1):
+            window_size=8, mlp_ratio=4, drop_path_rate=0.1):
     """
     Default settings are appropriate for Atari games. For other environments, change patch size
     and window size to be compatible, as well as image size to match the environment. Pre-
