@@ -15,15 +15,18 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
-REPLAY_MEMORY = 10000
+REPLAY_MEMORY = 100000
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
-DECAY_FRAMES = 1000
+DECAY_FRAMES = 10000
 DECAY_MODE = 'multiple'
-DECAY_RATE = 0.66
-DECAY_START_FRAMES = 10000
-SYNC_FREQUENCY = 1000
+DECAY_RATE = 0.25
+DECAY_START_FRAMES = 100000
+SYNC_FREQUENCY = 10000
+
+# Data collection
+reward_data = list()
 
 def main():
     ms_pacman()
@@ -67,7 +70,10 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            print(f"{total_reward}, {episode}")
+            print(f'{reward}, {episode}')
+            # Data collection
+            list.append([episode, total_reward]) 
+
             total_reward = 0
             next_state, info = env.reset() 
             next_state = process_state(next_state)
