@@ -1,6 +1,7 @@
 import sys
-import numpy
 import random
+import numpy as np
+from skimage.transform import resize
 import torch
 import gymnasium as gym
 from swin_agent import SwinAgent
@@ -14,7 +15,7 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DTYPE = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-EPISODES = 200E6
+EPISODES = int(200E6)
 REPLAY_MEMORY = 1E6
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
@@ -34,15 +35,18 @@ def ms_pacman():
     agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7)
 
     # Environment
-    env = gym.make("ALE/MsPacman-v5")
+    env = gym.make('ALE/MsPacman-v5')
     next_state, info = env.reset()
+    next_state = process_state(next_state)
 
     for episode in range(EPISODES):
         previous_state = next_state
 
         # Act
+        print("Checkpoint main.py")
         action = agent.act(previous_state)
         next_state, reward, terminated, truncated, info = env.step(action)
+        next_state = process_state(next_state)
 
         # Experience replay
         experience = Experience(previous_state, action, next_state, reward)
@@ -55,6 +59,12 @@ def ms_pacman():
         if terminated or truncated:
             observation, info = env.reset() 
         
+    
+def process_state(state):
+    state = resize(state, (84, 84))
+    state = np.moveaxis(state, 2, 0)
+    state = np.expand_dims(state, 0)
+    return state
 
 
 def get_model(image_size=(84,84), patch_size=3, in_channels=3,

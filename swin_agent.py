@@ -11,7 +11,7 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 class SwinAgent:
     def __init__(self, Q_network, target_network, epsilon_scheduler, replay_buffer, num_actions,
                 initial_exploration=40000, acting_frequency=4, learning_frequency=4, sync_frequency=40000, 
-                gamma=0.99, alpha=0.0000625) -> None:
+                gamma=0.99, alpha=0.0000625, batch_size=32) -> None:
         self.Q = Q_network.to(device=DEVICE)
         self.Q_target = target_network.to(device=DEVICE)
         self.epsilon_scheduler = epsilon_scheduler
@@ -26,10 +26,14 @@ class SwinAgent:
 
         self.gamma = gamma
         self.alpha = alpha
+        self.batch_size = batch_size
         self.optimizer = torch.optim.Adam(self.Q.parameters(), lr=alpha)
         
 
     def act(self, state):
+        print("Testing network")
+        print(self.Q(state))
+        print("Succesfully tested network")
         if self.frames_counter % self.acting_frequency != 0:
             return None 
 
@@ -52,13 +56,17 @@ class SwinAgent:
         2. Forward call, compute loss - https://arxiv.org/pdf/2206.15269.pdf
         3. Set optimizer zero_grad, call backwards
         """
+        # Sample batch from replay memory
+        state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
+
+
 
         if self.frames_counter % self.sync_frequency == 0:
             state_dict = self.Q.state_dict()
             self.Q_target.load_state_dict(state_dict)
 
 
-    def loss(state):
+    def loss(self, state_batch, action_batch, next_state_batch, reward_batch):
         # TODO
         raise NotImplementedError
 
