@@ -9,6 +9,9 @@ pip install scikit-image
 
 PRE-REQUISITES
 1. Clone this project
+```
+git clone https://github.com/haraldger/6998-project
+```
 2. Run the following command to move into the project:
 ```
 cd 6998-project
