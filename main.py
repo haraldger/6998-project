@@ -70,7 +70,7 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            print(f'{reward}, {episode}')
+            print(f'{total_reward}, {episode}')
             # Data collection
             reward_data.append([episode, total_reward]) 
 
