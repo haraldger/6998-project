@@ -23,11 +23,14 @@ class ReplayBuffer:
         self.action_memory[idx] = torch.Tensor([action]).type(torch.long)
         self.next_state_memory[idx] = torch.from_numpy(next_state).type(torch.float)
         self.reward_memory[idx] = torch.Tensor([reward]).type(torch.float)
+
+        # Bookkeeping
         self.counter += 1
+        self.counter = int(self.counter % self.capacity)
     
 
     def sample_tensor_batch(self, batch_size):
-        sample_index = np.random.choice(self.memory_size, batch_size)
+        sample_index = np.random.choice(self.capacity, batch_size)
 
         state_sample = torch.FloatTensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
         action_sample = torch.LongTensor((batch_size, 1)).to(DEVICE)
