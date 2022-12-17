@@ -33,7 +33,7 @@ class ReplayBuffer:
     for i in range(batch_size):
       experience = self.sample()
       state_batch.append(experience.current_state)
-      action_batch.append(experience.action)
+      action_batch.append([experience.action])
       next_state_batch.append(experience.next_state)
       reward_batch.append(experience.reward)
 
