@@ -60,7 +60,7 @@ class SwinAgent:
 
         # Backpropagation
         self.optimizer.zero_grad()
-        loss.backwards()
+        loss.backward()
         self.optimizer.step()
 
         if self.frames_counter % self.sync_frequency == 0:
