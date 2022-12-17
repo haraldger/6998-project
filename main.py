@@ -2,6 +2,7 @@ import sys
 import random
 import numpy as np
 from skimage.transform import resize
+import matplotlib.pyplot as plt
 import torch
 import gymnasium as gym
 from swin_agent import SwinAgent
@@ -23,7 +24,7 @@ DECAY_FRAMES = 10000
 DECAY_MODE = 'multiple'
 DECAY_RATE = 0.25
 DECAY_START_FRAMES = REPLAY_MEMORY
-SYNC_FREQUENCY = 10000
+SYNC_FREQUENCY = 5000
 
 # Data collection
 reward_data = list()
@@ -53,7 +54,7 @@ def ms_pacman():
 
         # Act
         action = agent.act(previous_state)
-        next_state, reward, terminated, truncated, info = env.step(8)
+        next_state, reward, terminated, truncated, info = env.step(action)
         next_state = process_state(next_state)
 
         total_reward += reward
@@ -70,9 +71,13 @@ def ms_pacman():
 
         # Environment
         if terminated or truncated:
-            print(f'{total_reward}, {episode}')
             # Data collection
             reward_data.append([episode, total_reward]) 
+            plt.figure()
+            plt.xlabel('Frames (gradient descent updates)')
+            plt.ylabel('Reward')
+            plt.plot(reward_data[:0], reward_data[:1])
+            plt.savefig(f'data/pacman_graph.png')
 
             total_reward = 0
             next_state, info = env.reset() 
