@@ -12,6 +12,8 @@ class ReplayBuffer:
         self.dims=dims
 
         self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
+        print(self.state_memory)
+        print(self.state_memory.shape)
         self.action_memory = torch.LongTensor((self.capacity,1))
         self.next_state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
         self.reward_memory = torch.FloatTensor((self.capacity,1))
