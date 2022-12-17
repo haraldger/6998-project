@@ -32,7 +32,7 @@ def ms_pacman():
     target_network = get_model()
     epsilon_scheduler = EpsilonScheduler(decay_frames=40000)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7, initial_exploration=20000)
+    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7, initial_exploration=10000)
 
     # Environment
     env = gym.make('ALE/MsPacman-v5')
@@ -73,7 +73,6 @@ def ms_pacman():
 def process_state(state):
     state = resize(state, (84, 84))
     state = np.moveaxis(state, 2, 0)
-    state = np.expand_dims(state, 0)
     return state
 
 
