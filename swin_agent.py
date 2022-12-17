@@ -70,5 +70,12 @@ class SwinAgent:
     def step(self):
         self.frames_counter += 1
 
+        if self.frames_counter % 10000 = 0:
+            torch.save({
+                        'frame': self.frames_counter,
+                        'model_state_dict': self.Q.state_dict(),
+                        'optimizer_state_dict': self.optimizer.state_dict(),
+                        }, 'model_weights/q_network_pacman.pth')
+
 
 
