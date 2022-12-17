@@ -5,7 +5,8 @@ import torch
 from epsilon_scheduler import EpsilonScheduler
 
 # Variables
-DTYPE = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+FLOAT_TENSOR = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+LONG_TENSOR = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class SwinAgent:

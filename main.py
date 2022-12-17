@@ -13,7 +13,8 @@ sys.path.append('./Swin-Transformer')
 from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 
 # Variables
-DTYPE = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+FLOAT_TENSOR = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+LONG_TENSOR = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
 REPLAY_MEMORY = 1E6
@@ -53,8 +54,7 @@ def ms_pacman():
         total_reward += reward
 
         # Experience replay
-        experience = Experience(previous_state, action, next_state, reward)
-        replay_buffer.add(experience=experience)
+        replay_buffer.add(previous_state, action, next_state, reward)
 
         # Learn
         agent.learn()

@@ -1,62 +1,51 @@
 import sys
+import numpy as np
 import random
 import torch
 
-DTYPE = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+FLOAT_TENSOR = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
+LONG_TENSOR = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class ReplayBuffer:
-  def __init__(self,capacity=3):
-    self.buffer=[]
-    self.capacity=capacity
+    def __init__(self, capacity=3, dims=(3,84,84)):
+        self.capacity = capacity
+        self.counter = 0
+        self.dims=dims
 
-  def add(self,experience):
-    if(self.capacity==len(self.buffer)):
-      self.buffer.pop(0)
-    self.buffer.append(experience)
-  
-  def show(self):
-    print(".....")
-    print("\nCapacity- ", self.capacity  )
-    print("\nCurrent length- ",len(self.buffer))
-    print(".....")
+        self.state_memory = FLOAT_TENSOR(self.capacity, self.dims[0], self.dims[1], self.dims[2])
+        self.action_memory = LONG_TENSOR(self.capacity)
+        self.next_state_memory = FLOAT_TENSOR(self.capacity, self.dims[0], self.dims[1], self.dims[2])
+        self.reward_memory = FLOAT_TENSOR(self.capacity)
 
-  def sample(self):
-    return(self.buffer[random.randint(0,len(self.buffer)-1)])
 
-  def sample_tensor_batch(self, batch_size):
-    state_batch = list()
-    action_batch = list()
-    next_state_batch = list()
-    reward_batch = list()
+    def add(self, state, action, next_state, reward):
+        idx = self.counter % self.capacity
+        self.state_memory[idx] = state
+        self.action_memory[idx] = LONG_TENSOR([action.tolist()])
+        self.next_state_memory[idx] = next_state
+        self.reward_memory[idx] = FLOAT_TENSOR([reward])
+        self.counter += 1
+    
 
-    for i in range(batch_size):
-      experience = self.sample()
-      state_batch.append(experience.current_state)
-      action_batch.append([experience.action])
-      next_state_batch.append(experience.next_state)
-      reward_batch.append(experience.reward)
+    def sample_tensor_batch(self, batch_size):
+        sample_index = np.random.choice(self.memory_size, batch_size)
 
-    state_batch = torch.Tensor(state_batch).to(DEVICE)
-    action_batch = torch.Tensor(action_batch).type(torch.int64).to(DEVICE)
-    next_state_batch = torch.Tensor(next_state_batch).to(DEVICE)
-    reward_batch = torch.Tensor(reward_batch).to(DEVICE)
+        state_sample = FLOAT_TENSOR(batch_size, self.dims[0], self.dims[1], self.dims[2])
+        action_sample = LONG_TENSOR(batch_size, 1)
+        next_state_sample = FLOAT_TENSOR(batch_size, self.dims[0], self.dims[1], self.dims[2])
+        reward_sample = FLOAT_TENSOR(batch_size, 1)
 
-    return state_batch, action_batch, next_state_batch, reward_batch
+        for index in range(sample_index.size):
+            state_sample[index] = self.state_memory[sample_index[index]]  
+            action_sample[index] = self.action_memory[sample_index[index]]
+            next_state_sample[index] = self.next_state_memory[sample_index[index]]
+            reward_sample[index] = self.reward_memory[sample_index[index]]
 
-class Experience:
-  def __init__(self, current_state, action, next_state, reward):
-    self.current_state = current_state
-    self.action = action
-    self.next_state = next_state
-    self.reward = reward
+        return state_sample, action_sample, next_state_sample, reward_sample
 
-  
-
-  def show(self):
-    print(".....")
-    print("\nCurrent State- ", self.current_state  )
-    print("\nAction- ",self.action)
-    print("\nReward- ",self.reward)
-    print("\nNext State",self.next_state)
-    print(".....")
+    def show(self):
+        print(".....")
+        print("\nCapacity- ", self.capacity)
+        print("\nCurrent length- ",len(self.state_memory))
+        print(".....")
