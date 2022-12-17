@@ -1,13 +1,28 @@
 DEPENDENCIES
 ```
-!pip install gymnasium[all]
-!pip install gymnasium[accept-rom-license]
-!pip install timm
-!pip install scikit-image
+pip install gymnasium[all]
+pip install gymnasium[accept-rom-license]
+pip install timm
+pip install scikit-image
 ```
 
 PRE-REQUISITES
 1. Clone this project
+2. Run the following command to move into the project:
+```
+cd 6998-project
+```
+3. Run the following commands to see that directories exist:
+```
+ls data/
+ls model_weights/
+```
+If not, run the following commands to create the directories:
+```
+mkdir data/
+mkdir model_weights/
+```
+
 
 TRAIN AGENT FROM SCRATCH
 
