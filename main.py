@@ -71,6 +71,7 @@ def ms_pacman():
         # Environment
         if terminated or truncated:
             # Data collection
+            global reward_data
             reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]]))) 
             print(reward_data)
             plt.figure()
