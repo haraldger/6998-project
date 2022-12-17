@@ -4,7 +4,11 @@ import numpy as np
 from skimage.transform import resize
 import matplotlib.pyplot as plt
 import torch
-import gymnasium as gym
+
+from nes_py.wrappers import JoypadSpace
+import gym_tetris
+from gym_tetris.actions import MOVEMENT
+
 from swin_agent import SwinAgent
 from epsilon_scheduler import EpsilonScheduler
 from experience_replay import ReplayBuffer
@@ -16,7 +20,7 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
-REPLAY_MEMORY = 50000
+REPLAY_MEMORY = 20000
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
@@ -24,7 +28,7 @@ DECAY_FRAMES = 10000
 DECAY_MODE = 'multiple'
 DECAY_RATE = 0.25
 DECAY_START_FRAMES = REPLAY_MEMORY
-SYNC_FREQUENCY = 5000
+SYNC_FREQUENCY = 2000
 
 # Data collection
 reward_data = np.array([[0,0]])
@@ -38,12 +42,16 @@ def tetris():
     target_network = get_model()
     epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=8,
+    agent = SwinAgent("tetris", q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=20,
                         initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
 
     # Environment
-    env = gym.make('ALE/MsPacman-v5')
-    next_state, info = env.reset()
+    env = gym_tetris.make('TetrisA-v0')
+    env = JoypadSpace(env, MOVEMENT)
+    next_state = env.reset()
+    print(next_state)
+    print(next_state.shape)
+    return
     next_state = process_state(next_state)
 
     total_reward = 0
@@ -55,7 +63,7 @@ def tetris():
 
         # Act
         action = agent.act(previous_state)
-        next_state, reward, terminated, truncated, info = env.step(action)
+        next_state, reward, terminated, info = env.step(action)
         next_state = process_state(next_state)
 
         total_reward += reward
@@ -71,13 +79,13 @@ def tetris():
         epsilon_scheduler.step()
 
         # Environment
-        if terminated or truncated:
+        if terminated:
             # Data collection
             global reward_data
             reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]])))
             plt.figure()
             plt.plot(reward_data[:,0], reward_data[:,1])
-            plt.savefig(f'data/pacman_graph.png')
+            plt.savefig(f'data/tetris_graph.png')
             plt.close()
 
             total_reward = 0
@@ -92,7 +100,7 @@ def process_state(state):
 
 
 def get_model(image_size=(84,84), patch_size=3, in_channels=3,
-            num_actions=8, depths=[2,3,2], heads=[3,3,6],
+            num_actions=20, depths=[2,3,2], heads=[3,3,6],
             window_size=7, mlp_ratio=4, drop_path_rate=0.1):
     """
     Default settings are appropriate for Atari games. For other environments, change patch size

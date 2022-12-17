@@ -8,9 +8,10 @@ from epsilon_scheduler import EpsilonScheduler
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class SwinAgent:
-    def __init__(self, Q_network, target_network, epsilon_scheduler, replay_buffer, num_actions,
+    def __init__(self, name, Q_network, target_network, epsilon_scheduler, replay_buffer, num_actions,
                 initial_exploration=40000, acting_frequency=4, learning_frequency=4, sync_frequency=40000, 
                 gamma=0.99, alpha=0.0000625, batch_size=32, loss_fn=torch.nn.MSELoss) -> None:
+        self.name = name
         self.Q = Q_network.to(device=DEVICE)
         self.Q_target = target_network.to(device=DEVICE)
         self.epsilon_scheduler = epsilon_scheduler
@@ -92,7 +93,7 @@ class SwinAgent:
                         'frame': self.frames_counter,
                         'model_state_dict': self.Q.state_dict(),
                         'optimizer_state_dict': self.optimizer.state_dict(),
-                        }, 'model_weights/q_network_pacman.pth')
+                        }, f'model_weights/q_network_{self.name}.pth')
 
 
 
