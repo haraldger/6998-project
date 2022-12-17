@@ -32,9 +32,6 @@ class SwinAgent:
         
 
     def act(self, state):
-        if self.frames_counter % self.acting_frequency != 0:
-            return None 
-
         epsilon = self.epsilon_scheduler.get_epsilon()
         if epsilon > random.random():
             action = random.randrange(self.num_actions)
@@ -45,15 +42,7 @@ class SwinAgent:
     def learn(self):
         if self.frames_counter < self.initial_exploration:
             return
-        # if self.frames_counter % self.learning_frequency != 0:
-        #     return
 
-        ### TODO: implement batch learning
-        """
-        1. Sample batch of experiences from replay buffer
-        2. Forward call, compute loss - https://arxiv.org/pdf/2206.15269.pdf
-        3. Set optimizer zero_grad, call backwards
-        """
         # Sample batch from replay memory
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
 

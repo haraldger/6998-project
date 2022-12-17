@@ -43,7 +43,6 @@ def ms_pacman():
         previous_state = next_state
 
         # Act
-        print("Checkpoint main.py")
         action = agent.act(previous_state)
         next_state, reward, terminated, truncated, info = env.step(action)
         next_state = process_state(next_state)
