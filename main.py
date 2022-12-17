@@ -14,8 +14,9 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-EPISODES = int(1E3)
+EPISODES = int(1E6)
 REPLAY_MEMORY = int(1E3)
+INITIAL_EXPLORATION=1000
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON=0.01
 # DECAY_FRAMES=1E6
@@ -31,7 +32,7 @@ def ms_pacman():
     target_network = get_model()
     epsilon_scheduler = EpsilonScheduler(decay_frames=40000)
     replay_buffer = ReplayBuffer(capacity=REPLAY_MEMORY)
-    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7, initial_exploration=1000)
+    agent = SwinAgent(q_network, target_network, epsilon_scheduler, replay_buffer, num_actions=7, initial_exploration=INITIAL_EXPLORATION)
 
     # Environment
     env = gym.make('ALE/MsPacman-v5')
