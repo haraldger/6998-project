@@ -2,6 +2,7 @@ DEPENDENCIES
 ```
 pip install gymnasium[all]
 pip install gymnasium[accept-rom-license]
+pip install gym-tetris
 pip install timm
 pip install scikit-image
 ```
