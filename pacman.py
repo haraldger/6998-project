@@ -28,7 +28,6 @@ SYNC_FREQUENCY = 5000
 
 # Data collection
 reward_data = np.array([[0,0]])
-print(reward_data)
 
 def main():
     ms_pacman()
@@ -75,10 +74,6 @@ def ms_pacman():
             reward_data = np.concatenate((reward_data, np.array([[episode, total_reward]]))) 
             print(reward_data)
             plt.figure()
-            plt.xlabel('Frames (gradient descent updates)')
-            plt.ylabel('Reward')
-            print(reward_data[:,0])
-            print(reward_data[:,1])
             plt.plot(reward_data[:,0], reward_data[:,1])
             plt.savefig(f'data/pacman_graph.png')
 
