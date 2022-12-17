@@ -38,9 +38,6 @@ class ReplayBuffer:
         reward_sample = torch.empty((batch_size, 1)).type(torch.float).to(DEVICE)
 
         for index in range(sample_index.size):
-          print(self.state_memory[sample_index[index]])
-          print(self.state_memory[sample_index[index]].shape)
-          print()
           state_sample[index] = self.state_memory[sample_index[index]]  
           action_sample[index] = self.action_memory[sample_index[index]]
           next_state_sample[index] = self.next_state_memory[sample_index[index]]
