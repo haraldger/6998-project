@@ -55,7 +55,8 @@ class SwinAgent:
         q_values = self.Q(state_batch).gather(1, action_batch)
         target_q_values = self.Q_target(next_state_batch).detach()
         targets = reward_batch + self.gamma * target_q_values.max(1)[0].view(self.batch_size, 1)
-        loss = self.loss_fn(q_values, targets)
+        loss = self.loss_fn()
+        loss(q_values, targets)
 
         # Backpropagation
         self.optimizer.zero_grad()
