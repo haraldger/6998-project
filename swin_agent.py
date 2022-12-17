@@ -41,7 +41,6 @@ class SwinAgent:
 
     def learn(self):
         if self.frames_counter < self.initial_exploration:
-            print("Skipped learning")
             return
 
         # Sample batch from replay memory
