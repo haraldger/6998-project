@@ -32,16 +32,19 @@ class ReplayBuffer:
     def sample_tensor_batch(self, batch_size):
         sample_index = np.random.choice(self.capacity, batch_size)
 
-        state_sample = torch.FloatTensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
-        action_sample = torch.LongTensor((batch_size, 1)).to(DEVICE)
-        next_state_sample = torch.FloatTensor((batch_size, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
-        reward_sample = torch.FloatTensor((batch_size, 1)).to(DEVICE)
+        state_sample = torch.empty(size=(batch_size, self.dims[0], self.dims[1], self.dims[2])).type(torch.float).to(DEVICE)
+        action_sample = torch.empty(size=(batch_size, 1)).type(torch.long).to(DEVICE)
+        next_state_sample = torch.empty(size=(batch_size, self.dims[0], self.dims[1], self.dims[2])).type(torch.float).to(DEVICE)
+        reward_sample = torch.empty((batch_size, 1)).type(torch.float).to(DEVICE)
 
         for index in range(sample_index.size):
-            state_sample[index] = self.state_memory[sample_index[index]]  
-            action_sample[index] = self.action_memory[sample_index[index]]
-            next_state_sample[index] = self.next_state_memory[sample_index[index]]
-            reward_sample[index] = self.reward_memory[sample_index[index]]
+          print(self.state_memory[sample_index[index]])
+          print(self.state_memory[sample_index[index]].shape)
+          print()
+          state_sample[index] = self.state_memory[sample_index[index]]  
+          action_sample[index] = self.action_memory[sample_index[index]]
+          next_state_sample[index] = self.next_state_memory[sample_index[index]]
+          reward_sample[index] = self.reward_memory[sample_index[index]]
 
         return state_sample, action_sample, next_state_sample, reward_sample
 
