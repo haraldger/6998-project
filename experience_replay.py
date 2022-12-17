@@ -22,7 +22,7 @@ class ReplayBuffer:
     print(".....")
 
   def sample(self):
-    return(self.buffer[random.randint(0,len(self.buffer))])
+    return(self.buffer[random.randint(0,len(self.buffer)-1)])
 
   def sample_tensor_batch(self, batch_size):
     state_batch = list()
