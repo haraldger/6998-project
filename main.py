@@ -27,7 +27,8 @@ DECAY_START_FRAMES = REPLAY_MEMORY
 SYNC_FREQUENCY = 5000
 
 # Data collection
-reward_data = list()
+reward_data = np.array([0,0])
+print(reward_data)
 
 def main():
     ms_pacman()
