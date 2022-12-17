@@ -37,7 +37,13 @@ class ReplayBuffer:
       next_state_batch.append(experience.next_state)
       reward_batch.append(experience.reward)
 
-    state_batch = torch.Tensor(state_batch).to(DEVICE)
+    try:
+      state_batch = torch.Tensor(state_batch).to(DEVICE)
+    except:
+      print(state_batch)
+      self.show()
+      state_batch = torch.Tensor(state_batch).to(DEVICE)
+
     action_batch = torch.Tensor(action_batch).to(DEVICE)
     next_state_batch = torch.Tensor(next_state_batch).to(DEVICE)
     reward_batch = torch.Tensor(reward_batch).to(DEVICE)
