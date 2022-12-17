@@ -6,7 +6,7 @@ import torch
 import gymnasium as gym
 from swin_agent import SwinAgent
 from epsilon_scheduler import EpsilonScheduler
-from experience_replay import Experience, ReplayBuffer
+from experience_replay import ReplayBuffer
 
 # Swin Transformer
 sys.path.append('./Swin-Transformer')
