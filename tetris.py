@@ -37,7 +37,7 @@ def main():
     tetris()
 
 def tetris():
-    Init data structures
+    # Init data structures
     q_network = get_model()
     target_network = get_model()
     epsilon_scheduler = EpsilonScheduler(decay_frames=DECAY_FRAMES, decay_mode=DECAY_MODE, decay_rate=DECAY_RATE, start_frames=DECAY_START_FRAMES)
