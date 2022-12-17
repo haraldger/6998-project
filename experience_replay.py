@@ -11,8 +11,8 @@ class ReplayBuffer:
         self.counter = 0
         self.dims=dims
 
-        self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
-        self.action_memory = torch.LongTensor((self.capacity)).to(DEVICE)
+        self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
+        self.action_memory = torch.LongTensor(self.capacity)
         self.next_state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2])).to(DEVICE)
         self.reward_memory = torch.FloatTensor((self.capacity)).to(DEVICE)
 
