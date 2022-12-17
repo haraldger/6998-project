@@ -44,7 +44,7 @@ class ReplayBuffer:
       self.show()
       state_batch = torch.Tensor(state_batch).to(DEVICE)
 
-    action_batch = torch.Tensor(action_batch).to(DEVICE)
+    action_batch = torch.Tensor(action_batch).type(torch.int64).to(DEVICE)
     next_state_batch = torch.Tensor(next_state_batch).to(DEVICE)
     reward_batch = torch.Tensor(reward_batch).to(DEVICE)
 
