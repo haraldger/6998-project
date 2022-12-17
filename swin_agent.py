@@ -36,7 +36,7 @@ class SwinAgent:
         if epsilon > random.random():
             action = random.randrange(self.num_actions)
         else:
-            action = torch.max(self.Q(state))[1]
+            action = torch.argmax(self.Q(state))
         return action
 
     def learn(self):
