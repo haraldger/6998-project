@@ -3,8 +3,6 @@ import numpy as np
 import random
 import torch
 
-FLOAT_TENSOR = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
-LONG_TENSOR = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class ReplayBuffer:
@@ -13,28 +11,28 @@ class ReplayBuffer:
         self.counter = 0
         self.dims=dims
 
-        self.state_memory = FLOAT_TENSOR(self.capacity, self.dims[0], self.dims[1], self.dims[2])
-        self.action_memory = LONG_TENSOR(self.capacity)
-        self.next_state_memory = FLOAT_TENSOR(self.capacity, self.dims[0], self.dims[1], self.dims[2])
-        self.reward_memory = FLOAT_TENSOR(self.capacity)
+        self.state_memory = torch.FloatTensor(self.capacity, self.dims[0], self.dims[1], self.dims[2]).to(DEVICE)
+        self.action_memory = torch.LongTensor(self.capacity).to(DEVICE)
+        self.next_state_memory = torch.FloatTensor(self.capacity, self.dims[0], self.dims[1], self.dims[2]).to(DEVICE)
+        self.reward_memory = torch.FloatTensor(self.capacity).to(DEVICE)
 
 
     def add(self, state, action, next_state, reward):
         idx = self.counter % self.capacity
         self.state_memory[idx] = state
-        self.action_memory[idx] = LONG_TENSOR([action.tolist()])
+        self.action_memory[idx] = torch.LongTensor([action.tolist()]).to(DEVICE)
         self.next_state_memory[idx] = next_state
-        self.reward_memory[idx] = FLOAT_TENSOR([reward])
+        self.reward_memory[idx] = torch.FloatTensor([reward]).to(DEVICE)
         self.counter += 1
     
 
     def sample_tensor_batch(self, batch_size):
         sample_index = np.random.choice(self.memory_size, batch_size)
 
-        state_sample = FLOAT_TENSOR(batch_size, self.dims[0], self.dims[1], self.dims[2])
-        action_sample = LONG_TENSOR(batch_size, 1)
-        next_state_sample = FLOAT_TENSOR(batch_size, self.dims[0], self.dims[1], self.dims[2])
-        reward_sample = FLOAT_TENSOR(batch_size, 1)
+        state_sample = torch.FloatTensor(batch_size, self.dims[0], self.dims[1], self.dims[2]).to(DEVICE)
+        action_sample = torch.LongTensor(batch_size, 1).to(DEVICE)
+        next_state_sample = torch.FloatTensor(batch_size, self.dims[0], self.dims[1], self.dims[2]).to(DEVICE)
+        reward_sample = torch.FloatTensor(batch_size, 1).to(DEVICE)
 
         for index in range(sample_index.size):
             state_sample[index] = self.state_memory[sample_index[index]]  

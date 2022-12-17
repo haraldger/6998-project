@@ -13,8 +13,6 @@ sys.path.append('./Swin-Transformer')
 from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 
 # Variables
-FLOAT_TENSOR = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
-LONG_TENSOR = torch.cuda.LongTensor if torch.cuda.is_available() else torch.LongTensor
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(1E6)
 REPLAY_MEMORY = 1E6
