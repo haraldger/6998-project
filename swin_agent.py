@@ -29,6 +29,7 @@ class SwinAgent:
         self.batch_size = batch_size
         self.loss_fn = loss_fn
         self.optimizer = torch.optim.Adam(self.Q.parameters(), lr=alpha)
+        self.flag=False
         
 
     def act(self, state):
@@ -45,6 +46,9 @@ class SwinAgent:
 
         # Sample batch from replay memory
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
+        if(self.flag==False):
+            flag=True
+            print(state_batch)
 
         # Compute Bellman loss/update
         q_values = self.Q(state_batch).gather(1, action_batch)
