@@ -10,8 +10,8 @@ class ReplayBuffer:
         self.capacity = capacity
         self.counter = 0
         self.dims=dims
-        print(self.dims)
-        self.state_memory = torch.empty((self.capacity, self.dims[0], self.dims[1], self.dims[2]), dtype=torch.float)
+
+        self.state_memory = torch.FloatTensor((self.capacity, self.dims[0], self.dims[1], self.dims[2]))
         print(self.state_memory)
         print(self.state_memory.shape)
         self.action_memory = torch.LongTensor((self.capacity,1))
