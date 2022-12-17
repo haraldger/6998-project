@@ -49,7 +49,7 @@ class SwinAgent:
         state_batch, action_batch, next_state_batch, reward_batch = self.replay_buffer.sample_tensor_batch(self.batch_size)
         if(self.flag==False):
             flag=True
-            print(state_batch)
+            print(state_batch.shape)
 
         # Compute Bellman loss/update
         q_values = self.Q(state_batch).gather(1, action_batch)
