@@ -67,6 +67,9 @@ def tetris():
         next_state, reward, terminated, info = env.step(action)
         next_state = process_state(next_state)
 
+        if episode & 1000 == 0:
+            print(episode)
+            plt.imsave('test_frame.png', next_state)
         total_reward += reward
 
         # Experience replay
