@@ -50,7 +50,7 @@ def tetris():
                         initial_exploration=INITIAL_EXPLORATION, sync_frequency=SYNC_FREQUENCY)
 
     # Environment
-    env = gym_tetris.make('TetrisA-v0')
+    env = gym_tetris.make('TetrisA-v3')
     env = JoypadSpace(env, MOVEMENT)
     next_state = env.reset()
     next_state = process_state(next_state)
