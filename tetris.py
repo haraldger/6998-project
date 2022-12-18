@@ -90,7 +90,7 @@ def tetris():
             plt.close()
 
             total_reward = 0
-            next_state, info = env.reset() 
+            next_state = env.reset() 
             next_state = process_state(next_state)
         
     
