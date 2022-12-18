@@ -16,11 +16,11 @@ from models.swin_transformer_v2 import SwinTransformerV2 as Transformer
 # Variables
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 EPISODES = int(2E6)
-REPLAY_MEMORY = 1250
+REPLAY_MEMORY = 12500
 INITIAL_EXPLORATION = REPLAY_MEMORY
 # INITIAL_EPSILON = 1.0
 # FINAL_EPSILON = 0.01
-DECAY_FRAMES = 1000
+DECAY_FRAMES = 10000
 DECAY_MODE = 'multiple'
 DECAY_RATE = 0.25
 DECAY_START_FRAMES = REPLAY_MEMORY
@@ -48,7 +48,7 @@ def ms_pacman():
 
     total_reward = 0
     for episode in range(EPISODES):
-        if episode % 100 == 0:
+        if episode % 10000 == 0:
             print(f'Episode {episode}')     # Logging
 
         previous_state = next_state
