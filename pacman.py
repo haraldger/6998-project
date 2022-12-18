@@ -58,6 +58,9 @@ def ms_pacman():
         next_state, reward, terminated, truncated, info = env.step(action)
         next_state = process_state(next_state)
 
+        if episode & 1000 == 0:
+            plt.imsave('test_frame.png', next_state)
+
         total_reward += reward
 
         # Experience replay
