@@ -7,6 +7,8 @@ pip install timm
 pip install scikit-image
 ```
 
+Other dependencies, such as pytorch and numpy may be required. Follow the prompts in the command line when running the script (pacman.py) to see if any additional required modules are missing. Install by using similar commands to above.
+
 PRE-REQUISITES
 1. Clone this project
 ```
