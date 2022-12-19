@@ -30,9 +30,9 @@ SYNC_FREQUENCY = 5000
 reward_data = np.array([[0,0]])
 
 def main():
-    ms_pacman()
+    tetris()
 
-def ms_pacman():
+def tetris():
     # Init data structures
     q_network = get_model()
     target_network = get_model()
